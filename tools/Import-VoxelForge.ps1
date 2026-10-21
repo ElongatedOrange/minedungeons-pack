@@ -64,6 +64,7 @@ function Save-Trim([System.Drawing.Bitmap[]]$Layers, [string]$Target) {
 
 $archive = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path $Zip))
 $missing = [System.Collections.Generic.List[string]]::new()
+$notInExport = [System.Collections.Generic.List[string]]::new()
 try {
     $imported = 0
     foreach ($key in ($provenance.Keys | Sort-Object)) {
@@ -75,7 +76,7 @@ try {
                 $entry = Find-Entry $archive $value[$part] '^assets/voxelforge/textures/entity/equipment/humanoid(_leggings)?/.+_{p}\.png$'
                 if ($entry) { $parts[$part] = Read-Bitmap $entry }
             }
-            if ($parts.Count -eq 0) { continue }
+            if ($parts.Count -eq 0) { $notInExport.Add($key); continue }
             if ($parts.Count -ne 4) { $missing.Add("$key (some armour parts)"); continue }
             try {
                 Save-Trim @($parts.head, $parts.chest, $parts.feet) (Join-Path $root "art/trims/${id}_humanoid.png")
@@ -88,15 +89,15 @@ try {
         $asset = $value.asset
         if ($key -like 'gui:*') {
             $entry = Find-Entry $archive $asset '^assets/voxelforge/textures/.+_{p}/main\.png$'
-            if (-not $entry) { continue }
+            if (-not $entry) { $notInExport.Add($key); continue }
             Save-Entry $entry (Join-Path $root "art/gui/$($key.Substring(4)).png")
         } elseif ($key -eq 'pack_icon') {
             $entry = Find-Entry $archive $asset '^assets/voxelforge/textures/(item/)?.+_{p}/main\.png$'
-            if (-not $entry) { continue }
+            if (-not $entry) { $notInExport.Add($key); continue }
             Save-Entry $entry (Join-Path $root 'pack.png')
         } else {
             $entry = Find-Entry $archive $asset '^assets/voxelforge/textures/item/.+_{p}(/main)?\.png$'
-            if (-not $entry) { continue }
+            if (-not $entry) { $notInExport.Add($key); continue }
             Save-Entry $entry (Join-Path $root "art/items/$key.png")
             if ($key -like 'skin_*') {
                 $worn = Find-Entry $archive $asset '^assets/voxelforge/textures/entity/equipment/humanoid/.+_{p}\.png$'
@@ -109,6 +110,8 @@ try {
     }
     "$imported entr(ies) imported."
     if ($missing.Count -gt 0) { Write-Warning ("Incomplete in this export: " + ($missing -join ', ')) }
+    # An export usually holds only what changed, so this is a note, not an error.
+    if ($notInExport.Count -gt 0) { "Not in this export (kept as they are): " + ($notInExport -join ', ') }
 } finally {
     $archive.Dispose()
 }

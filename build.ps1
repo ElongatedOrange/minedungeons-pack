@@ -2,7 +2,9 @@
 #   dist/minedungeons-pack.zip (+ .sha1)   Java resource pack (item_model, 1.21.4+)
 #   dist/minedungeons-bedrock.mcpack       Bedrock resource pack, sent to Bedrock players by Geyser
 #   dist/minedungeons-geyser.json          Geyser custom item mappings (format 2)
-# The same inputs always give byte-identical files (sorted entries, fixed timestamps, LF JSON).
+# The same inputs always give byte-identical files on any machine: entries in ordinal order, fixed timestamps, LF JSON,
+# and stored without compression (Deflate output differs between .NET versions; the PNGs are compressed already).
+# Needs Windows (System.Drawing) for the image checks.
 #   ./build.ps1 [-Version 1.0.0]
 param(
     [string]$Version = (Get-Content -Raw (Join-Path $PSScriptRoot 'VERSION')).Trim()
@@ -53,9 +55,11 @@ function New-Zip([string]$Source, [string]$ZipPath) {
     try {
         $files = Get-ChildItem $Source -Recurse -File | ForEach-Object {
             [pscustomobject]@{ File = $_; Relative = [System.IO.Path]::GetRelativePath($Source, $_.FullName).Replace('\', '/') }
-        } | Sort-Object Relative -Culture ''
-        foreach ($f in $files) {
-            $entry = $zip.CreateEntry($f.Relative, [System.IO.Compression.CompressionLevel]::Optimal)
+        }
+        $sorted = [System.Collections.Generic.List[object]]::new([object[]]@($files))
+        $sorted.Sort([System.Comparison[object]] { param($a, $b) [string]::CompareOrdinal($a.Relative, $b.Relative) })
+        foreach ($f in $sorted) {
+            $entry = $zip.CreateEntry($f.Relative, [System.IO.Compression.CompressionLevel]::NoCompression)
             $entry.LastWriteTime = [DateTimeOffset]::new(2026, 10, 21, 0, 0, 0, [TimeSpan]::Zero)
             $in = [System.IO.File]::OpenRead($f.File.FullName)
             $out = $entry.Open()
@@ -111,8 +115,9 @@ foreach ($item in $items) {
         continue
     }
     $size = Get-PngSize $art
-    if (-not $size -or $size[0] -ne $size[1] -or @(16, 32) -notcontains $size[0]) {
-        $problems.Add("$($item.id): texture must be a 16x16 or 32x32 PNG")
+    $sizes = if ($item.id -like 'skin_*') { @(16, 32) } else { @(16) }
+    if (-not $size -or $size[0] -ne $size[1] -or $sizes -notcontains $size[0]) {
+        $problems.Add("$($item.id): texture must be a $(($sizes | ForEach-Object { "${_}x$_" }) -join ' or ') PNG")
     }
 }
 foreach ($skin in $skins) {
@@ -136,6 +141,13 @@ foreach ($bg in $gui.backgrounds) {
     $size = if (Test-Path -LiteralPath $file) { Get-PngSize $file } else { $null }
     if (-not $size -or $size[0] -lt $gui.width -or $size[1] -lt $bg.height) {
         $problems.Add("gui $($bg.id): needs at least $($gui.width)x$($bg.height) (art/gui/$($bg.id).png)")
+    } else {
+        # The title glyph's advance (and so the -169 shift back) assumes the art reaches its last column.
+        $bitmap = [System.Drawing.Bitmap]::new($file)
+        try {
+            $edge = 0..($bg.height - 1) | Where-Object { $bitmap.GetPixel($gui.width - 1, $_).A -gt 0 }
+            if (-not $edge) { $problems.Add("gui $($bg.id): column $($gui.width - 1) must have opaque pixels") }
+        } finally { $bitmap.Dispose() }
     }
 }
 if (-not (Test-Path (Join-Path $Root 'pack.png'))) { $problems.Add('pack.png is missing') }

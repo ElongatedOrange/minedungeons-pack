@@ -16,7 +16,7 @@ The item art for the Mine Dungeons network (minedungeons.net), for Java and Bedr
 | `art/gui/<id>.png` | Menu backgrounds, cropped to 176 wide by the height in `gui.json` |
 | `gui.json` | The `minedungeons:gui` font: background glyphs and negative spaces. Copied from the plugins repo, where a test keeps it equal to MDSeasons' `GuiTitles` |
 | `pack.png` | The pack icon |
-| `provenance/voxelforge.json` | The VoxelForge asset each texture came from |
+| `provenance/voxelforge.json` | The VoxelForge asset (and revision) each texture came from; update the revision when an asset is edited in the studio |
 | `tools/Import-VoxelForge.ps1` | Copies textures out of a VoxelForge Java export |
 | `build.ps1` | Builds `dist/` |
 
@@ -34,10 +34,10 @@ All art is made in VoxelForge (16×16, vanilla style). To change a texture:
 ## Build and release
 
 ```powershell
-./build.ps1                # version from VERSION
+./build.ps1                # version from VERSION (Windows: the image checks use System.Drawing)
 ```
 
-- **What the build does:** it fails, naming each problem, if an item has no 16×16 texture. The same inputs always give the same files (same SHA-1).
+- **What the build does:** it fails, naming each problem, if any art is missing or the wrong size or colours. The same inputs always give the same files (same SHA-1) on any machine.
 - **Releasing:**
   1. Bump `VERSION`, then build.
   2. Make a GitHub release `vX.Y.Z` with `dist/minedungeons-pack.zip`, `dist/minedungeons-pack.zip.sha1`, `dist/minedungeons-bedrock.mcpack` and `dist/minedungeons-geyser.json`.
