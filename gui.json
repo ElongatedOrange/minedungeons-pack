@@ -1,0 +1,32 @@
+{
+  "_comment": "Menu background glyphs for the minedungeons:gui font. MDSeasons' GuiTitles draws them; GuiTitlesTest keeps this equal. The pack repo builds font/gui.json from a copy.",
+  "ascent": 13,
+  "width": 176,
+  "backgrounds": [
+    {
+      "id": "crate_list",
+      "char": "\ue000",
+      "height": 168
+    },
+    {
+      "id": "crate_preview",
+      "char": "\ue001",
+      "height": 222
+    },
+    {
+      "id": "cosmetics",
+      "char": "\ue002",
+      "height": 168
+    }
+  ],
+  "spaces": {
+    "\uf801": -1,
+    "\uf802": -2,
+    "\uf803": -4,
+    "\uf804": -8,
+    "\uf805": -16,
+    "\uf806": -32,
+    "\uf807": -64,
+    "\uf808": -128
+  }
+}

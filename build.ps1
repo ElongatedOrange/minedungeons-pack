@@ -9,6 +9,7 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression.FileSystem
+Add-Type -AssemblyName System.Drawing
 
 $Root = $PSScriptRoot
 $Namespace = 'minedungeons'
@@ -40,8 +41,9 @@ function Get-PngSize([string]$Path) {
     if ($bytes.Length -lt 24 -or -not [System.Linq.Enumerable]::SequenceEqual([byte[]]$bytes[0..7], $signature)) {
         return $null
     }
-    $width = ($bytes[16] -shl 24) -bor ($bytes[17] -shl 16) -bor ($bytes[18] -shl 8) -bor $bytes[19]
-    $height = ($bytes[20] -shl 24) -bor ($bytes[21] -shl 16) -bor ($bytes[22] -shl 8) -bor $bytes[23]
+    # [int] first: shifting a [byte] stays a byte, so 256 would read as 0.
+    $width = ([int]$bytes[16] -shl 24) -bor ([int]$bytes[17] -shl 16) -bor ([int]$bytes[18] -shl 8) -bor [int]$bytes[19]
+    $height = ([int]$bytes[20] -shl 24) -bor ([int]$bytes[21] -shl 16) -bor ([int]$bytes[22] -shl 8) -bor [int]$bytes[23]
     return @($width, $height)
 }
 
@@ -62,8 +64,40 @@ function New-Zip([string]$Source, [string]$ZipPath) {
     } finally { $zip.Dispose() }
 }
 
+$TrimGreys = @(224, 192, 160, 128, 96, 64, 32, 0)
+
+# True if every visible pixel is one of the trim base greys and fully opaque (the client tints them per material).
+function Test-TrimPalette([string]$Path) {
+    $bitmap = [System.Drawing.Bitmap]::new($Path)
+    try {
+        for ($y = 0; $y -lt $bitmap.Height; $y++) {
+            for ($x = 0; $x -lt $bitmap.Width; $x++) {
+                $c = $bitmap.GetPixel($x, $y)
+                if ($c.A -eq 0) { continue }
+                if ($c.A -ne 255 -or $c.R -ne $c.G -or $c.G -ne $c.B -or $TrimGreys -notcontains [int]$c.R) { return $false }
+            }
+        }
+        return $true
+    } finally { $bitmap.Dispose() }
+}
+
+# The top-left Width x Height of a PNG, saved as a new PNG.
+function Save-Crop([string]$From, [string]$To, [int]$Width, [int]$Height) {
+    $source = [System.Drawing.Bitmap]::new($From)
+    try {
+        $crop = $source.Clone([System.Drawing.Rectangle]::new(0, 0, $Width, $Height), $source.PixelFormat)
+        try {
+            New-Item -ItemType Directory -Force (Split-Path $To) | Out-Null
+            $crop.Save($To, [System.Drawing.Imaging.ImageFormat]::Png)
+        } finally { $crop.Dispose() }
+    } finally { $source.Dispose() }
+}
+
 # --- check the inputs -------------------------------------------------------------------------------------------
 $items = @((Get-Content -Raw (Join-Path $Root 'items.json') | ConvertFrom-Json).items)
+$gui = Get-Content -Raw (Join-Path $Root 'gui.json') | ConvertFrom-Json
+$skins = @($items | Where-Object { $_.id -like 'skin_*' } | ForEach-Object id)
+$patterns = @($items | Where-Object { $_.id -like 'trim_*' } | ForEach-Object { $_.id.Substring(5) })
 $problems = [System.Collections.Generic.List[string]]::new()
 $seen = @{}
 foreach ($item in $items) {
@@ -77,7 +111,32 @@ foreach ($item in $items) {
         continue
     }
     $size = Get-PngSize $art
-    if (-not $size -or $size[0] -ne 16 -or $size[1] -ne 16) { $problems.Add("$($item.id): texture must be a 16x16 PNG") }
+    if (-not $size -or $size[0] -ne $size[1] -or @(16, 32) -notcontains $size[0]) {
+        $problems.Add("$($item.id): texture must be a 16x16 or 32x32 PNG")
+    }
+}
+foreach ($skin in $skins) {
+    $worn = Join-Path $Root "art/equipment/$skin.png"
+    $size = if (Test-Path -LiteralPath $worn) { Get-PngSize $worn } else { $null }
+    if (-not $size -or $size[0] -ne 64 -or $size[1] -ne 32) { $problems.Add("${skin}: needs a 64x32 worn texture (art/equipment/$skin.png)") }
+}
+foreach ($pattern in $patterns) {
+    foreach ($layer in @('humanoid', 'humanoid_leggings')) {
+        $file = Join-Path $Root "art/trims/${pattern}_$layer.png"
+        $size = if (Test-Path -LiteralPath $file) { Get-PngSize $file } else { $null }
+        if (-not $size -or $size[0] -ne 64 -or $size[1] -ne 32) {
+            $problems.Add("trim ${pattern}: needs a 64x32 $layer texture (art/trims/${pattern}_$layer.png)")
+        } elseif (-not (Test-TrimPalette $file)) {
+            $problems.Add("trim ${pattern}: $layer uses colours outside the trim palette")
+        }
+    }
+}
+foreach ($bg in $gui.backgrounds) {
+    $file = Join-Path $Root "art/gui/$($bg.id).png"
+    $size = if (Test-Path -LiteralPath $file) { Get-PngSize $file } else { $null }
+    if (-not $size -or $size[0] -lt $gui.width -or $size[1] -lt $bg.height) {
+        $problems.Add("gui $($bg.id): needs at least $($gui.width)x$($bg.height) (art/gui/$($bg.id).png)")
+    }
 }
 if (-not (Test-Path (Join-Path $Root 'pack.png'))) { $problems.Add('pack.png is missing') }
 if ($problems.Count -gt 0) { throw "Pack not built:`n  " + ($problems -join "`n  ") }
@@ -116,6 +175,30 @@ foreach ($item in ($items | Sort-Object id -Culture '')) {
     if (-not $mappings.Contains($item.base)) { $mappings[$item.base] = [System.Collections.Generic.List[object]]::new() }
     $mappings[$item.base].Add($definition)
 }
+# Helmet skins: the worn look (equipment asset) under the same id as the skin's item model.
+foreach ($skin in ($skins | Sort-Object -Culture '')) {
+    Copy-File (Join-Path $Root "art/equipment/$skin.png") (Join-Path $java "assets/$Namespace/textures/entity/equipment/humanoid/$skin.png")
+    Write-Json (Join-Path $java "assets/$Namespace/equipment/$skin.json") ([ordered]@{
+            layers = [ordered]@{ humanoid = @([ordered]@{ texture = "${Namespace}:$skin" }) } })
+}
+# Trim patterns: 26.x finds these from each pattern's asset_id (minedungeons:<pattern>); no atlas file.
+foreach ($pattern in ($patterns | Sort-Object -Culture '')) {
+    foreach ($layer in @('humanoid', 'humanoid_leggings')) {
+        Copy-File (Join-Path $Root "art/trims/${pattern}_$layer.png") (Join-Path $java "assets/$Namespace/textures/trims/entity/$layer/$pattern.png")
+    }
+}
+# Menu backgrounds: bitmap glyphs in the minedungeons:gui font, plus negative spaces to position them.
+$providers = [System.Collections.Generic.List[object]]::new()
+$advances = [ordered]@{}
+foreach ($space in ($gui.spaces.PSObject.Properties | Sort-Object Name -Culture '')) { $advances[$space.Name] = [int]$space.Value }
+$providers.Add([ordered]@{ type = 'space'; advances = $advances })
+foreach ($bg in ($gui.backgrounds | Sort-Object id -Culture '')) {
+    Save-Crop (Join-Path $Root "art/gui/$($bg.id).png") (Join-Path $java "assets/$Namespace/textures/gui/$($bg.id).png") $gui.width $bg.height
+    $providers.Add([ordered]@{ type = 'bitmap'; file = "${Namespace}:gui/$($bg.id).png"; ascent = [int]$gui.ascent
+            height = [int]$bg.height; chars = @($bg.char) })
+}
+Write-Json (Join-Path $java "assets/$Namespace/font/gui.json") ([ordered]@{ providers = $providers })
+
 Copy-File (Join-Path $Root 'pack.png') (Join-Path $bedrock 'pack_icon.png')
 Write-Json (Join-Path $bedrock 'manifest.json') ([ordered]@{
         format_version = 2

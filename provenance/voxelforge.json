@@ -1,38 +1,158 @@
 {
-  "verdant_spores": { "asset": "c9294774-c143-4bad-bf16-38e85978cb06" },
-  "verdant_essence": { "asset": "b4ca08e2-f055-4dfc-9577-ba2b8793a3bc" },
-  "grave_dust": { "asset": "7ad1c6f5-511d-4e9e-a34f-a1a7f568268b" },
-  "bone_ivory": { "asset": "8f72520f-13d7-44fd-a6a3-08b801d48a36" },
-  "frost_shard": { "asset": "4be8b672-b0ff-4014-b1d8-f49e56aa8d59" },
-  "frozen_core": { "asset": "607b3efb-59ad-40c3-9d1e-36d84c394422" },
-  "sun_crystal": { "asset": "db817d6a-bb3e-4466-a7d1-568b91f0fd0b" },
-  "sunstone": { "asset": "170f3a3d-b49c-4d80-b6b7-9abfdb313961" },
-  "heartwood_resin": { "asset": "811d6ea8-5149-4556-a458-2a6f68744596" },
-  "living_amber": { "asset": "221e055f-615b-49f2-b0a2-b86450440a89" },
-  "slag_ore": { "asset": "00cecdf4-753f-45a5-8836-1b9e0621180c" },
-  "foundry_steel": { "asset": "dd684c8d-1a12-4a50-a6f9-beffc74a2da0" },
-  "raw_shadow_ore": { "asset": "c2a974c2-8dfb-43f8-96fb-703962ea33ab" },
-  "purified_shadow_bar": { "asset": "64e6c89a-454c-47d2-8579-ca6bd1b011d9" },
-  "refinery": { "asset": "2eb78fb9-a970-45d5-904d-2c73c414649a" },
-  "base_core": { "asset": "abaf79ca-dc03-4dfd-accd-38f1b43b50a9" },
-  "siege_cannon": { "asset": "822d5b46-6f2e-4b86-9833-3ecd3d92794d" },
-  "cannon_shell": { "asset": "7546d340-9187-474e-ad35-3253909aa615" },
-  "drill": { "asset": "d5fcad1a-ab9e-43b2-9f23-35dedffe30c9" },
-  "breach_charge": { "asset": "59d33306-3f0c-4655-91a1-502c97f84026" },
-  "grapple": { "asset": "a9b2f9b1-968b-48dd-ab42-4098fb5f9e75" },
-  "repair_kit": { "asset": "438f4f7c-5b3b-4598-a84d-451c5a0f0ab2" },
-  "spawner_zombie": { "asset": "afdd9666-e76f-4f8d-a9fe-fb99986e33de" },
-  "spawner_spider": { "asset": "318265db-3e53-476c-80f1-bbcfc6ba0bb3" },
-  "spawner_skeleton": { "asset": "1e92b869-1c7e-4861-9130-8c9962dcb1a9" },
-  "spawner_creeper": { "asset": "d9690c5f-e2e2-4e17-80a7-212273c61b41" },
-  "spawner_blaze": { "asset": "b48f258e-8d32-4306-9d0a-50c6d4c422ab" },
-  "spawner_magma_cube": { "asset": "5ce35f69-a9a3-49d2-9629-778e0d6b7ecf" },
-  "voidfin": { "asset": "917a1d94-4a13-4875-97d5-223ec719bd43" },
-  "abyssal_eel": { "asset": "8f4ccbc4-4814-420f-b7a6-e70308dad0e1" },
-  "starscale_carp": { "asset": "7ede41aa-4f4f-42d4-97e1-aad14400f74d" },
-  "skip_beacon": { "asset": "491c83dd-f05c-472f-8c7d-6e2fd13bbafa" },
-  "crate_key": { "asset": "4b6afe42-1822-495c-ae4e-45d975fe5a1d" },
-  "layer_key": { "asset": "2f232c9d-cd5d-4688-99f4-1352ee51eee3" },
-  "layer_sigil": { "asset": "0f0f1ce2-9a33-4341-bea3-9b25a1ed34c2" },
-  "pack_icon": { "asset": "214b908d-5165-41fc-9512-2fa1a57dcca0" }
+  "verdant_spores": {
+    "asset": "c9294774-c143-4bad-bf16-38e85978cb06"
+  },
+  "verdant_essence": {
+    "asset": "b4ca08e2-f055-4dfc-9577-ba2b8793a3bc"
+  },
+  "grave_dust": {
+    "asset": "7ad1c6f5-511d-4e9e-a34f-a1a7f568268b"
+  },
+  "bone_ivory": {
+    "asset": "8f72520f-13d7-44fd-a6a3-08b801d48a36"
+  },
+  "frost_shard": {
+    "asset": "4be8b672-b0ff-4014-b1d8-f49e56aa8d59"
+  },
+  "frozen_core": {
+    "asset": "607b3efb-59ad-40c3-9d1e-36d84c394422"
+  },
+  "sun_crystal": {
+    "asset": "db817d6a-bb3e-4466-a7d1-568b91f0fd0b"
+  },
+  "sunstone": {
+    "asset": "170f3a3d-b49c-4d80-b6b7-9abfdb313961"
+  },
+  "heartwood_resin": {
+    "asset": "811d6ea8-5149-4556-a458-2a6f68744596"
+  },
+  "living_amber": {
+    "asset": "221e055f-615b-49f2-b0a2-b86450440a89"
+  },
+  "slag_ore": {
+    "asset": "00cecdf4-753f-45a5-8836-1b9e0621180c"
+  },
+  "foundry_steel": {
+    "asset": "dd684c8d-1a12-4a50-a6f9-beffc74a2da0"
+  },
+  "raw_shadow_ore": {
+    "asset": "c2a974c2-8dfb-43f8-96fb-703962ea33ab"
+  },
+  "purified_shadow_bar": {
+    "asset": "64e6c89a-454c-47d2-8579-ca6bd1b011d9"
+  },
+  "refinery": {
+    "asset": "2eb78fb9-a970-45d5-904d-2c73c414649a"
+  },
+  "base_core": {
+    "asset": "abaf79ca-dc03-4dfd-accd-38f1b43b50a9"
+  },
+  "siege_cannon": {
+    "asset": "822d5b46-6f2e-4b86-9833-3ecd3d92794d"
+  },
+  "cannon_shell": {
+    "asset": "7546d340-9187-474e-ad35-3253909aa615"
+  },
+  "drill": {
+    "asset": "d5fcad1a-ab9e-43b2-9f23-35dedffe30c9"
+  },
+  "breach_charge": {
+    "asset": "59d33306-3f0c-4655-91a1-502c97f84026"
+  },
+  "grapple": {
+    "asset": "a9b2f9b1-968b-48dd-ab42-4098fb5f9e75"
+  },
+  "repair_kit": {
+    "asset": "438f4f7c-5b3b-4598-a84d-451c5a0f0ab2"
+  },
+  "spawner_zombie": {
+    "asset": "afdd9666-e76f-4f8d-a9fe-fb99986e33de"
+  },
+  "spawner_spider": {
+    "asset": "318265db-3e53-476c-80f1-bbcfc6ba0bb3"
+  },
+  "spawner_skeleton": {
+    "asset": "1e92b869-1c7e-4861-9130-8c9962dcb1a9"
+  },
+  "spawner_creeper": {
+    "asset": "d9690c5f-e2e2-4e17-80a7-212273c61b41"
+  },
+  "spawner_blaze": {
+    "asset": "b48f258e-8d32-4306-9d0a-50c6d4c422ab"
+  },
+  "spawner_magma_cube": {
+    "asset": "5ce35f69-a9a3-49d2-9629-778e0d6b7ecf"
+  },
+  "voidfin": {
+    "asset": "917a1d94-4a13-4875-97d5-223ec719bd43"
+  },
+  "abyssal_eel": {
+    "asset": "8f4ccbc4-4814-420f-b7a6-e70308dad0e1"
+  },
+  "starscale_carp": {
+    "asset": "7ede41aa-4f4f-42d4-97e1-aad14400f74d"
+  },
+  "skip_beacon": {
+    "asset": "491c83dd-f05c-472f-8c7d-6e2fd13bbafa"
+  },
+  "crate_key": {
+    "asset": "4b6afe42-1822-495c-ae4e-45d975fe5a1d"
+  },
+  "layer_key": {
+    "asset": "2f232c9d-cd5d-4688-99f4-1352ee51eee3"
+  },
+  "layer_sigil": {
+    "asset": "0f0f1ce2-9a33-4341-bea3-9b25a1ed34c2"
+  },
+  "pack_icon": {
+    "asset": "214b908d-5165-41fc-9512-2fa1a57dcca0"
+  },
+  "skin_lantern_helm": {
+    "asset": "6e98d7dc-392e-49c5-b468-3b42d0f45c77"
+  },
+  "skin_bone_crown": {
+    "asset": "362f305d-b140-41ab-bc51-8bb31022b94f"
+  },
+  "skin_frost_visor": {
+    "asset": "c3273b09-52ed-449b-8c06-cf52e0b5f9ae"
+  },
+  "skin_shadow_cowl": {
+    "asset": "c58418e5-7cf6-45f2-bccf-517b605ead66"
+  },
+  "trim_delver": {
+    "asset": "b80c17f8-aa93-49c3-be9d-9a97236d7e50"
+  },
+  "trim_rune": {
+    "asset": "2ff10826-a193-46d1-a1e6-154a4716e217"
+  },
+  "trim_ember": {
+    "asset": "7de0bb3c-0748-4d0f-9cce-f5e260ba5284"
+  },
+  "gui:crate_list": {
+    "asset": "a436b83f-7376-4b46-9e8f-e485fdf53ffb"
+  },
+  "gui:crate_preview": {
+    "asset": "d9fcc358-084e-4802-9450-0c2f0270fa58"
+  },
+  "gui:cosmetics": {
+    "asset": "6b83b695-5e2a-488f-ba4f-9bf408c09053"
+  },
+  "trim_pattern:delver": {
+    "head": "f12ad6d1-51a2-4aa6-9fa9-494a630cad56",
+    "chest": "8599ab53-82da-4c30-b778-da5337cf9fa9",
+    "legs": "f8b4c9bb-09e2-45d7-b334-f23c05d36a22",
+    "feet": "d5dcd243-29df-4fdd-ae55-50d23b9e1ba5"
+  },
+  "trim_pattern:rune": {
+    "head": "2cd3a712-9bf0-47d6-a066-8828981d41a2",
+    "chest": "846cd31f-bb6a-448f-9739-38566cc753e7",
+    "legs": "6a926038-8b1a-4254-bb0e-6ccf3a656b07",
+    "feet": "966d1933-3cb1-4ae5-84a1-930d3187a50f"
+  },
+  "trim_pattern:ember": {
+    "head": "f4564e2e-7cb6-4ba8-a2b2-763e8d42af85",
+    "chest": "cf83dd87-1b51-4fa2-b4e3-14d959bfb2b1",
+    "legs": "1546488b-b8cf-4fc2-8e90-0fec914bcd2d",
+    "feet": "a8c942ea-a07a-4998-80c9-c65e7c87f2b5"
+  }
 }

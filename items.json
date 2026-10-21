@@ -167,6 +167,41 @@
       "name": "Crate Key"
     },
     {
+      "id": "skin_lantern_helm",
+      "base": "minecraft:paper",
+      "name": "Lantern Helm Skin"
+    },
+    {
+      "id": "skin_bone_crown",
+      "base": "minecraft:paper",
+      "name": "Bone Crown Skin"
+    },
+    {
+      "id": "skin_frost_visor",
+      "base": "minecraft:paper",
+      "name": "Frost Visor Skin"
+    },
+    {
+      "id": "skin_shadow_cowl",
+      "base": "minecraft:paper",
+      "name": "Shadow Cowl Skin"
+    },
+    {
+      "id": "trim_delver",
+      "base": "minecraft:paper",
+      "name": "Delver Trim Template"
+    },
+    {
+      "id": "trim_rune",
+      "base": "minecraft:paper",
+      "name": "Rune Trim Template"
+    },
+    {
+      "id": "trim_ember",
+      "base": "minecraft:paper",
+      "name": "Ember Trim Template"
+    },
+    {
       "id": "layer_key",
       "base": "minecraft:trial_key",
       "name": "Layer Key"

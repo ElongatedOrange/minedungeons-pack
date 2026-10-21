@@ -10,7 +10,11 @@ The item art for the Mine Dungeons network (minedungeons.net), for Java and Bedr
 | Path | What |
 |---|---|
 | `items.json` | Every item: id, base Java item, name. Copied from the plugins repo (`tools/pack/items.json`), where a test keeps it equal to the plugins |
-| `art/items/<id>.png` | The 16×16 textures |
+| `art/items/<id>.png` | Item icons (16×16, or 32×32 for helmet skins) |
+| `art/equipment/<skin>.png` | Each helmet skin's worn look (64×32), used as `equipment/<skin>.json` |
+| `art/trims/<pattern>_humanoid[_leggings].png` | Trim patterns (64×32), in the eight trim-palette greys only; the client tints them per material |
+| `art/gui/<id>.png` | Menu backgrounds, cropped to 176 wide by the height in `gui.json` |
+| `gui.json` | The `minedungeons:gui` font: background glyphs and negative spaces. Copied from the plugins repo, where a test keeps it equal to MDSeasons' `GuiTitles` |
 | `pack.png` | The pack icon |
 | `provenance/voxelforge.json` | The VoxelForge asset each texture came from |
 | `tools/Import-VoxelForge.ps1` | Copies textures out of a VoxelForge Java export |
@@ -22,6 +26,10 @@ All art is made in VoxelForge (16×16, vanilla style). To change a texture:
 1. Edit or regenerate the asset in the studio.
 2. Point `provenance/voxelforge.json` at it.
 3. Export those assets as a Java pack, then run `./tools/Import-VoxelForge.ps1 -Zip <export>`.
+
+   **What the import does to some assets:**
+   - **Skins:** both the icon and the worn texture come in.
+   - **Trims:** a pattern's head, chest and boots layers are merged and quantised to the trim palette.
 
 ## Build and release
 
