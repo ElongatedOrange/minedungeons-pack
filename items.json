@@ -1,0 +1,180 @@
+{
+  "_comment": "Generated from MDCore's ItemModels.packItems(); PackItemsTest keeps it equal. The pack repo builds from a copy.",
+  "items": [
+    {
+      "id": "verdant_spores",
+      "base": "minecraft:slime_ball",
+      "name": "Verdant Spores"
+    },
+    {
+      "id": "verdant_essence",
+      "base": "minecraft:magma_cream",
+      "name": "Verdant Essence"
+    },
+    {
+      "id": "grave_dust",
+      "base": "minecraft:gunpowder",
+      "name": "Grave Dust"
+    },
+    {
+      "id": "bone_ivory",
+      "base": "minecraft:nautilus_shell",
+      "name": "Bone Ivory"
+    },
+    {
+      "id": "frost_shard",
+      "base": "minecraft:prismarine_shard",
+      "name": "Frost Shard"
+    },
+    {
+      "id": "frozen_core",
+      "base": "minecraft:prismarine_crystals",
+      "name": "Frozen Core"
+    },
+    {
+      "id": "sun_crystal",
+      "base": "minecraft:amethyst_shard",
+      "name": "Sun Crystal"
+    },
+    {
+      "id": "sunstone",
+      "base": "minecraft:blaze_powder",
+      "name": "Sunstone"
+    },
+    {
+      "id": "heartwood_resin",
+      "base": "minecraft:phantom_membrane",
+      "name": "Heartwood Resin"
+    },
+    {
+      "id": "living_amber",
+      "base": "minecraft:rabbit_foot",
+      "name": "Living Amber"
+    },
+    {
+      "id": "slag_ore",
+      "base": "minecraft:flint",
+      "name": "Slag Ore"
+    },
+    {
+      "id": "foundry_steel",
+      "base": "minecraft:breeze_rod",
+      "name": "Foundry Steel"
+    },
+    {
+      "id": "raw_shadow_ore",
+      "base": "minecraft:echo_shard",
+      "name": "Raw Shadow Ore"
+    },
+    {
+      "id": "purified_shadow_bar",
+      "base": "minecraft:nether_star",
+      "name": "Purified Shadow Bar"
+    },
+    {
+      "id": "refinery",
+      "base": "minecraft:blast_furnace",
+      "name": "Refinery"
+    },
+    {
+      "id": "base_core",
+      "base": "minecraft:beacon",
+      "name": "Base Core"
+    },
+    {
+      "id": "siege_cannon",
+      "base": "minecraft:dispenser",
+      "name": "Siege Cannon"
+    },
+    {
+      "id": "cannon_shell",
+      "base": "minecraft:firework_star",
+      "name": "Cannon Shell"
+    },
+    {
+      "id": "drill",
+      "base": "minecraft:carrot_on_a_stick",
+      "name": "Drill"
+    },
+    {
+      "id": "breach_charge",
+      "base": "minecraft:heart_of_the_sea",
+      "name": "Breach Charge"
+    },
+    {
+      "id": "grapple",
+      "base": "minecraft:warped_fungus_on_a_stick",
+      "name": "Grapple"
+    },
+    {
+      "id": "repair_kit",
+      "base": "minecraft:brick",
+      "name": "Repair Kit"
+    },
+    {
+      "id": "spawner_zombie",
+      "base": "minecraft:spawner",
+      "name": "Zombie Spawner"
+    },
+    {
+      "id": "spawner_spider",
+      "base": "minecraft:spawner",
+      "name": "Spider Spawner"
+    },
+    {
+      "id": "spawner_skeleton",
+      "base": "minecraft:spawner",
+      "name": "Skeleton Spawner"
+    },
+    {
+      "id": "spawner_creeper",
+      "base": "minecraft:spawner",
+      "name": "Creeper Spawner"
+    },
+    {
+      "id": "spawner_blaze",
+      "base": "minecraft:spawner",
+      "name": "Blaze Spawner"
+    },
+    {
+      "id": "spawner_magma_cube",
+      "base": "minecraft:spawner",
+      "name": "Magma Cube Spawner"
+    },
+    {
+      "id": "voidfin",
+      "base": "minecraft:cod",
+      "name": "Voidfin"
+    },
+    {
+      "id": "abyssal_eel",
+      "base": "minecraft:salmon",
+      "name": "Abyssal Eel"
+    },
+    {
+      "id": "starscale_carp",
+      "base": "minecraft:tropical_fish",
+      "name": "Starscale Carp"
+    },
+    {
+      "id": "skip_beacon",
+      "base": "minecraft:recovery_compass",
+      "name": "Skip Beacon"
+    },
+    {
+      "id": "crate_key",
+      "base": "minecraft:tripwire_hook",
+      "name": "Crate Key"
+    },
+    {
+      "id": "layer_key",
+      "base": "minecraft:trial_key",
+      "name": "Layer Key"
+    },
+    {
+      "id": "layer_sigil",
+      "base": "minecraft:ominous_trial_key",
+      "name": "Layer Sigil"
+    }
+  ]
+}
