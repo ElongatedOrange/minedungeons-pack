@@ -2,9 +2,9 @@
 #   dist/minedungeons-pack.zip (+ .sha1)   Java resource pack (item_model, 1.21.4+)
 #   dist/minedungeons-bedrock.mcpack       Bedrock resource pack, sent to Bedrock players by Geyser
 #   dist/minedungeons-geyser.json          Geyser custom item mappings (format 2)
-# The same inputs always give byte-identical files on any machine: entries in ordinal order, fixed timestamps, LF JSON,
-# and stored without compression (Deflate output differs between .NET versions; the PNGs are compressed already).
-# Needs Windows (System.Drawing) for the image checks.
+# The same inputs always give byte-identical files on any Windows machine with PowerShell 7 (the image checks need
+# System.Drawing): entries in ordinal order, fixed timestamps, LF JSON, and stored without compression (Deflate output
+# differs between .NET versions; the PNGs are compressed already).
 #   ./build.ps1 [-Version 1.0.0]
 param(
     [string]$Version = (Get-Content -Raw (Join-Path $PSScriptRoot 'VERSION')).Trim()
@@ -145,8 +145,9 @@ foreach ($bg in $gui.backgrounds) {
         # The title glyph's advance (and so the -169 shift back) assumes the art reaches its last column.
         $bitmap = [System.Drawing.Bitmap]::new($file)
         try {
-            $edge = 0..($bg.height - 1) | Where-Object { $bitmap.GetPixel($gui.width - 1, $_).A -gt 0 }
-            if (-not $edge) { $problems.Add("gui $($bg.id): column $($gui.width - 1) must have opaque pixels") }
+            # @(): a single match at row 0 would otherwise be the scalar 0, which reads as "none".
+            $edge = @(0..($bg.height - 1) | Where-Object { $bitmap.GetPixel($gui.width - 1, $_).A -gt 0 })
+            if ($edge.Count -eq 0) { $problems.Add("gui $($bg.id): column $($gui.width - 1) must have opaque pixels") }
         } finally { $bitmap.Dispose() }
     }
 }

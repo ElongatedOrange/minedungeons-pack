@@ -37,7 +37,7 @@ All art is made in VoxelForge (16×16, vanilla style). To change a texture:
 ./build.ps1                # version from VERSION (Windows: the image checks use System.Drawing)
 ```
 
-- **What the build does:** it fails, naming each problem, if any art is missing or the wrong size or colours. The same inputs always give the same files (same SHA-1) on any machine.
+- **What the build does:** it fails, naming each problem, if any art is missing or the wrong size or colours. The same inputs always give the same files (same SHA-1) on any Windows machine with PowerShell 7.
 - **Releasing:**
   1. Bump `VERSION`, then build.
   2. Make a GitHub release `vX.Y.Z` with `dist/minedungeons-pack.zip`, `dist/minedungeons-pack.zip.sha1`, `dist/minedungeons-bedrock.mcpack` and `dist/minedungeons-geyser.json`.
