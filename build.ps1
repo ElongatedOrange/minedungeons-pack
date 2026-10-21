@@ -181,11 +181,32 @@ foreach ($skin in ($skins | Sort-Object -Culture '')) {
     Write-Json (Join-Path $java "assets/$Namespace/equipment/$skin.json") ([ordered]@{
             layers = [ordered]@{ humanoid = @([ordered]@{ texture = "${Namespace}:$skin" }) } })
 }
-# Trim patterns: 26.x finds these from each pattern's asset_id (minedungeons:<pattern>); no atlas file.
+# Trim patterns. 26.x finds them from each pattern's asset_id (minedungeons:<pattern>) and tints them through the
+# palette named in each texture's .mcmeta (without it they'd show as plain grey). 1.21.4-1.21.11 clients (through
+# ViaVersion) build them from the armor_trims atlas instead; our entries add to vanilla's there, and 26.x ignores it.
+$trimTextures = [System.Collections.Generic.List[string]]::new()
 foreach ($pattern in ($patterns | Sort-Object -Culture '')) {
     foreach ($layer in @('humanoid', 'humanoid_leggings')) {
-        Copy-File (Join-Path $Root "art/trims/${pattern}_$layer.png") (Join-Path $java "assets/$Namespace/textures/trims/entity/$layer/$pattern.png")
+        $texture = Join-Path $java "assets/$Namespace/textures/trims/entity/$layer/$pattern.png"
+        Copy-File (Join-Path $Root "art/trims/${pattern}_$layer.png") $texture
+        Write-Json "$texture.mcmeta" ([ordered]@{ palette = [ordered]@{ base_palette = 'minecraft:trim_base' } })
+        $trimTextures.Add("${Namespace}:trims/entity/$layer/$pattern")
     }
+}
+if ($trimTextures.Count -gt 0) {
+    $permutations = [ordered]@{}
+    foreach ($material in @('amethyst', 'copper', 'diamond', 'diamond_darker', 'emerald', 'gold', 'gold_darker', 'iron',
+            'iron_darker', 'lapis', 'netherite', 'netherite_darker', 'quartz', 'redstone', 'resin')) {
+        $permutations[$material] = "minecraft:trims/color_palettes/$material"
+    }
+    Write-Json (Join-Path $java 'assets/minecraft/atlases/armor_trims.json') ([ordered]@{
+            sources = @([ordered]@{
+                    type = 'minecraft:paletted_permutations'
+                    palette_key = 'minecraft:trims/color_palettes/trim_palette'
+                    permutations = $permutations
+                    textures = @($trimTextures)
+                })
+        })
 }
 # Menu backgrounds: bitmap glyphs in the minedungeons:gui font, plus negative spaces to position them.
 $providers = [System.Collections.Generic.List[object]]::new()
